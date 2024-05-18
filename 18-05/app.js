@@ -12,12 +12,13 @@ mySubmitBtn.addEventListener('click', (event) => {
         alert('Passwords do not match!');
         return;
     }
-    if(gpdrCheck === false){
+    if (gpdrCheck === false) {
         alert('You must agree to the processing of personal data!');
         return;
     }
 
     const user = {
+        id : Date.now() + Math.random() + name.substring(0, 3),
         name,
         surname,
         email,
@@ -25,8 +26,30 @@ mySubmitBtn.addEventListener('click', (event) => {
         gpdrCheck
     };
 
-    // const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
-    console.log(user);
-    localStorage.setItem('user', JSON.stringify(user));
+    const usersFromLocalStorage = JSON.parse(localStorage.getItem('users') || '[]');
 
+    // check email is exist
+
+    const isEmailExist = usersFromLocalStorage.some((user) => user.email === email);
+    if (isEmailExist) {
+        alert('Email is already exist!');
+        return;
+    }
+
+    // use another way
+    // const isEmailExist = usersFromLocalStorage.find((user) => user.email === email);
+
+    // use foreach
+    // let isEmailExist = false;
+    // usersFromLocalStorage.forEach((user) => {
+    //     if (user.email === email) {
+    //         isEmailExist = true;
+    //     }
+    // });
+    // if (isEmailExist) {
+    //     alert('Email is already exist!');
+    //     return;
+    // }
+    usersFromLocalStorage.push(user);
+    localStorage.setItem('users', JSON.stringify(usersFromLocalStorage));
 });
